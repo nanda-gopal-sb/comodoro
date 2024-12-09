@@ -7,44 +7,36 @@
 void timer()
 {
     char figlet[] = "figlet ";
-    char num[200] = {0};
-    int seconds = 0;
-    printf("Seconds\t");
-    scanf("%d", &seconds);
-    while (seconds >= 0)
+    char sec[3] = {0};
+    char min[3] = {0};
+    int seconds = 59;
+    int minutes = 0;
+    printf("Minutes\t");
+    scanf("%d", &minutes);
+    minutes--;
+    while (minutes >= 0)
     {
-        sprintf(num, "%d", seconds);
+        sprintf(min, "%d", minutes);
+        sprintf(sec, "%d", seconds);
         strcpy(figlet, "figlet ");
-        strcat(figlet, num);
+        strcat(figlet, min);
+        strcat(figlet, " : ");
+        strcat(figlet, sec);
         system(msg);
+        system("figlet Time to Work");
         system(figlet);
         clock_t stop = clock() + CLOCKS_PER_SEC;
         while (clock() < stop)
         {
         }
         seconds--;
+        if (seconds == 0)
+        {
+            minutes--;
+            seconds = 59;
+        }
     }
     printf("Times up\n");
-    // struct tm *ptr;
-    // time_t t;
-    // t = time(NULL);
-    // ptr = localtime(&t);
-    // int startMins = ptr->tm_min;
-    // int endMins = startMins;
-    // printf("Start your timer-\n");
-    // printf("Enter the time you want to start on");
-    // int timer = 0;
-    // scanf("%d", &timer);
-    // while ((endMins - startMins) != timer)
-    // {
-    //     t = time(NULL);
-    //     ptr = localtime(&t);
-    //     endMins = ptr->tm_min;
-    // }
-    // t = time(NULL);
-    // ptr = localtime(&t);
-    // endMins = ptr->tm_min;
-    // printf("%d\n", endMins);
 }
 void print_image(FILE *fptr)
 {
@@ -73,11 +65,15 @@ void showOptions()
 }
 int main(void)
 {
-    // char ch = 0;
-    // draw();
-    // showOptions();
-    // scanf("%c", &ch);
-    // system(msg);
-    timer();
+
+    char ch = 0;
+    draw();
+    showOptions();
+    scanf("%c", &ch);
+    if (ch == '1')
+    {
+        system(msg);
+        timer();
+    }
     return 0;
 }

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <time.h>
+#include <stdlib.h>
 void timer()
 {
     struct tm *ptr;
@@ -31,7 +32,7 @@ void print_image(FILE *fptr)
 }
 int draw()
 {
-    char *filename = "../assests/art.txt";
+    char *filename = "assests/art.txt";
     FILE *fptr = NULL;
     fptr = fopen(filename, "r");
     if (fptr == NULL)
@@ -43,9 +44,13 @@ int draw()
     fclose(fptr);
     return 0;
 }
-
+void showOptions()
+{
+    printf("1-Start timer\n");
+}
 int main(void)
 {
     draw();
+    showOptions();
     return 0;
 }

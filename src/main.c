@@ -3,7 +3,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define msg "clear"
+#define cls "clear"
+#define msq "figlet Time to Work"
+void prepareString(char *figlet, char *sec, char *min)
+{
+    strcpy(figlet, "figlet ");
+    strcat(figlet, min);
+    strcat(figlet, " : ");
+    strcat(figlet, sec);
+}
 void timer()
 {
     char figlet[] = "figlet ";
@@ -11,24 +19,35 @@ void timer()
     char min[3] = {0};
     int seconds = 59;
     int minutes = 0;
-    printf("Minutes\t");
-    scanf("%d", &minutes);
+
+    int workTime = 0;
+    int smallBreak = 0;
+    int bigBreak = 0;
+    int cycles = 0;
+    printf("Duration of Each Work Interval\t");
+    scanf("%d", &workTime);
+    printf("\n");
+
+    printf("Duration of small break\t");
+    scanf("%d", &smallBreak);
+    printf("\n");
+
+    printf("Duration of big break\t");
+    scanf("%d", &bigBreak);
+    printf("\n");
+
     minutes--;
     while (minutes >= 0)
     {
         sprintf(min, "%d", minutes);
         sprintf(sec, "%d", seconds);
-        strcpy(figlet, "figlet ");
-        strcat(figlet, min);
-        strcat(figlet, " : ");
-        strcat(figlet, sec);
-        system(msg);
-        system("figlet Time to Work");
+        prepareString(figlet, sec, min);
+        system(cls);
+        system(msq);
         system(figlet);
         clock_t stop = clock() + CLOCKS_PER_SEC;
         while (clock() < stop)
-        {
-        }
+            ;
         seconds--;
         if (seconds == 0)
         {
@@ -59,21 +78,12 @@ int draw()
     fclose(fptr);
     return 0;
 }
-void showOptions()
-{
-    printf("1-Start timer\n");
-}
+
 int main(void)
 {
-
-    char ch = 0;
+    char ch = '0';
     draw();
-    showOptions();
     scanf("%c", &ch);
-    if (ch == '1')
-    {
-        system(msg);
-        timer();
-    }
+    timer();
     return 0;
 }

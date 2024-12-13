@@ -4,7 +4,14 @@
 #include <string.h>
 
 #define cls "clear"
-#define msq "figlet Time to Work"
+#define workMsg "figlet Time to Work"
+
+enum msg
+{
+    work,
+    longBreak,
+    shortBreak
+};
 void prepareString(char *figlet, char *sec, char *min)
 {
     strcpy(figlet, "figlet ");
@@ -12,14 +19,37 @@ void prepareString(char *figlet, char *sec, char *min)
     strcat(figlet, " : ");
     strcat(figlet, sec);
 }
-void timer()
+
+void timer(int minutes)
 {
     char figlet[] = "figlet ";
     char sec[3] = {0};
     char min[3] = {0};
     int seconds = 59;
-    int minutes = 0;
-
+    int min2 = minutes;
+    min2--;
+    while (min2 >= 0)
+    {
+        sprintf(min, "%d", min2);
+        sprintf(sec, "%d", seconds);
+        prepareString(figlet, sec, min);
+        system(cls);
+        system(workMsg);
+        system(figlet);
+        clock_t stop = clock() + CLOCKS_PER_SEC;
+        while (clock() < stop)
+            ;
+        seconds--;
+        if (seconds == 0)
+        {
+            minutes--;
+            seconds = 59;
+        }
+    }
+    printf("Times up\n");
+}
+void mainLoop()
+{
     int workTime = 0;
     int smallBreak = 0;
     int bigBreak = 0;
@@ -35,27 +65,6 @@ void timer()
     printf("Duration of big break\t");
     scanf("%d", &bigBreak);
     printf("\n");
-
-    minutes--;
-    while (minutes >= 0)
-    {
-        sprintf(min, "%d", minutes);
-        sprintf(sec, "%d", seconds);
-        prepareString(figlet, sec, min);
-        system(cls);
-        system(msq);
-        system(figlet);
-        clock_t stop = clock() + CLOCKS_PER_SEC;
-        while (clock() < stop)
-            ;
-        seconds--;
-        if (seconds == 0)
-        {
-            minutes--;
-            seconds = 59;
-        }
-    }
-    printf("Times up\n");
 }
 void print_image(FILE *fptr)
 {
@@ -64,7 +73,7 @@ void print_image(FILE *fptr)
     while (fgets(read_string, sizeof(read_string), fptr) != NULL)
         printf("%s", read_string);
 }
-int draw()
+void draw()
 {
     char *filename = "assests/art.txt";
     FILE *fptr = NULL;
@@ -72,18 +81,20 @@ int draw()
     if (fptr == NULL)
     {
         fprintf(stderr, "error opening %s\n", filename);
-        return 1;
+        return;
     }
     print_image(fptr);
     fclose(fptr);
-    return 0;
+    return;
 }
 
 int main(void)
 {
+    system(cls);
     char ch = '0';
     draw();
     scanf("%c", &ch);
-    timer();
+    system(cls);
+    timer(10);
     return 0;
 }

@@ -66,50 +66,12 @@ void mainLoop()
     scanf("%d", &bigBreak);
     printf("\n");
 }
-void numberOfn(char *lmao)
-{
-    char *ch = strrchr(lmao, '/');
-    int n = 0;
-    for (int i = 0; i < strlen(lmao); i++)
-    {
-        if (i > ch && lmao[i] != '\n')
-        {
-            printf("%c", lmao[i]);
-        }
-    }
-}
 void print_image(FILE *fptr)
 {
     char read_string[256] = {0};
 
     while (fgets(read_string, sizeof(read_string), fptr) != NULL)
-        numberOfn(read_string);
-    printf("\n");
-}
-
-void printDigit(int num)
-{
-    char filename[50] = {0};
-    sprintf(filename, "%s %d", "assests/numbers/", num);
-    char filename2[50] = {0};
-
-    for (int i = 0, j = 0; i < strlen(filename); i++)
-    {
-        if (filename[i] != ' ')
-        {
-            filename2[j] = filename[i];
-            j++;
-        }
-    }
-    FILE *fptr = NULL;
-    fptr = fopen(filename2, "r");
-    if (fptr == NULL)
-    {
-        fprintf(stderr, "error opening %s\n", filename2);
-        return;
-    }
-    print_image(fptr);
-    fclose(fptr);
+        printf("%s", read_string);
 }
 void draw()
 {
@@ -128,18 +90,11 @@ void draw()
 
 int main(void)
 {
-    // system(cls);
-    // char ch = '0';
-    // draw();
-    // scanf("%c", &ch);
-    // system(cls);
-    // timer(10);
-    int i = 0;
-    while (i <= 10)
-    {
-        printDigit(i);
-        i++;
-    }
-
+    system(cls);
+    char ch = '0';
+    draw();
+    scanf("%c", &ch);
+    system(cls);
+    timer(10);
     return 0;
 }

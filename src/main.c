@@ -85,6 +85,10 @@ void draw()
     }
     print_image(fptr);
     fclose(fptr);
+    filename = "assests/pokemon";
+    fptr = fopen(filename, "r");
+    print_image(fptr);
+    fclose(fptr);
     return;
 }
 

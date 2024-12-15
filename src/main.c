@@ -20,9 +20,22 @@ void prepareString(char *figlet, char *sec, char *min)
     strcat(figlet, sec);
 }
 
-void timer(int minutes)
+void timer(int minutes, enum msg param)
 {
-    char figlet[] = "figlet ";
+    char currMsg[40] = "figlet time to work2\0";
+    char figlet[50] = "figlet ";
+    if (param == work)
+    {
+        strcpy(currMsg, "figlet Time to work");
+    }
+    if (param == longBreak)
+    {
+        strcpy(currMsg, "figlet Long Break!");
+    }
+    if (param == shortBreak)
+    {
+        strcpy(currMsg, "figlet Short break?");
+    }
     char sec[3] = {0};
     char min[3] = {0};
     int seconds = 59;
@@ -34,7 +47,7 @@ void timer(int minutes)
         sprintf(sec, "%d", seconds);
         prepareString(figlet, sec, min);
         system(cls);
-        system(workMsg);
+        system(currMsg);
         system(figlet);
         clock_t stop = clock() + CLOCKS_PER_SEC;
         while (clock() < stop)
@@ -47,6 +60,7 @@ void timer(int minutes)
         }
     }
     printf("Times up\n");
+    system("speaker-test -t  sine -f 250 -l 1");
 }
 void mainLoop()
 {
@@ -94,11 +108,12 @@ void draw()
 
 int main(void)
 {
-    system(cls);
-    char ch = '0';
-    draw();
-    scanf("%c", &ch);
-    system(cls);
-    timer(10);
-    return 0;
+
+    // system(cls);
+    // char ch = '0';
+    // draw();
+    // scanf("%c", &ch);
+    // system(cls);
+    timer(5, work);
+    // return 0;
 }

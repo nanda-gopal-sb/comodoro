@@ -2,7 +2,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <mpv/client.h>
+#include <signal.h>
 #define cls "clear"
 #define workMsg "figlet Time to Work"
 
@@ -12,6 +13,16 @@ enum msg
     longBreak,
     shortBreak
 };
+void SetTextCursorVisible(int visible)
+{
+    fputs((visible ? "\e[?25h" : "\e[?25l"), stdout);
+}
+void intHandler(int condt)
+{
+    system("tput cnorm");
+    exit(1);
+}
+
 void prepareString(char *figlet, char *sec, char *min)
 {
     strcpy(figlet, "figlet ");
@@ -55,12 +66,11 @@ void timer(int minutes, enum msg param)
         seconds--;
         if (seconds == 0)
         {
-            minutes--;
+            min2--;
             seconds = 59;
         }
     }
-    printf("Times up\n");
-    system("speaker-test -t  sine -f 250 -l 1");
+    system("mpv --no-vid --terminal=no assests/sound.mp3");
 }
 void mainLoop()
 {
@@ -79,6 +89,13 @@ void mainLoop()
     printf("Duration of big break\t");
     scanf("%d", &bigBreak);
     printf("\n");
+
+    printf("The number of cycles\t");
+    scanf("%d", &cycles);
+    printf("\n");
+
+    printf("A long break will occure after two consecutive short ones");
+    printf("A cycle consists of 2 work sessions 2 short breaks and 1 long one");
 }
 void print_image(FILE *fptr)
 {
@@ -108,12 +125,9 @@ void draw()
 
 int main(void)
 {
-
-    // system(cls);
-    // char ch = '0';
-    // draw();
-    // scanf("%c", &ch);
-    // system(cls);
-    timer(5, work);
+    system("tput civis");
+    signal(SIGINT, intHandler);
+    timer(2, work);
+    system("tput cnorm");
     // return 0;
 }

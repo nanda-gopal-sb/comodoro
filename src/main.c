@@ -2,7 +2,6 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-#include <mpv/client.h>
 #include <signal.h>
 #define cls "clear"
 #define workMsg "figlet Time to Work"
@@ -74,10 +73,13 @@ void timer(int minutes, enum msg param)
 }
 void mainLoop()
 {
+    system(cls);
+    int ch = 0;
     int workTime = 0;
     int smallBreak = 0;
     int bigBreak = 0;
     int cycles = 0;
+    int breakCounter = 0;
     printf("Duration of Each Work Interval\t");
     scanf("%d", &workTime);
     printf("\n");
@@ -94,8 +96,19 @@ void mainLoop()
     scanf("%d", &cycles);
     printf("\n");
 
-    printf("A long break will occure after two consecutive short ones");
-    printf("A cycle consists of 2 work sessions 2 short breaks and 1 long one");
+    while (cycles >= 0)
+    {
+        if (breakCounter == 2)
+        {
+            timer(bigBreak, longBreak);
+            breakCounter = 0;
+            cycles--;
+            continue;
+        }
+        timer(workTime, work);
+        timer(smallBreak, shortBreak);
+        breakCounter++;
+    }
 }
 void print_image(FILE *fptr)
 {
@@ -104,30 +117,37 @@ void print_image(FILE *fptr)
     while (fgets(read_string, sizeof(read_string), fptr) != NULL)
         printf("%s", read_string);
 }
-void draw()
+char draw()
 {
+    char ch = 0;
     char *filename = "assests/art";
     FILE *fptr = NULL;
     fptr = fopen(filename, "r");
     if (fptr == NULL)
     {
         fprintf(stderr, "error opening %s\n", filename);
-        return;
+        return ch;
     }
     print_image(fptr);
     fclose(fptr);
     filename = "assests/pokemon";
     fptr = fopen(filename, "r");
+    if (fptr == NULL)
+    {
+        fprintf(stderr, "error opening %s\n", filename);
+        return ch;
+    }
     print_image(fptr);
-    fclose(fptr);
-    return;
+    scanf("%c", &ch);
+    return ch;
 }
 
 int main(void)
 {
-    system("tput civis");
+    system(cls);
     signal(SIGINT, intHandler);
-    timer(2, work);
+    system("tput civis");
+    draw();
+    mainLoop();
     system("tput cnorm");
-    // return 0;
 }

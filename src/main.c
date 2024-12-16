@@ -24,7 +24,7 @@ void intHandler(int condt)
 
 void prepareString(char *figlet, char *sec, char *min)
 {
-    strcpy(figlet, "figlet ");
+    strcpy(figlet, "figlet -f future ");
     strcat(figlet, min);
     strcat(figlet, " : ");
     strcat(figlet, sec);
@@ -33,25 +33,25 @@ void prepareString(char *figlet, char *sec, char *min)
 void timer(int minutes, enum msg param)
 {
     char currMsg[40] = "figlet time to work2\0";
-    char figlet[50] = "figlet ";
+    char figlet[50] = "";
     if (param == work)
     {
-        strcpy(currMsg, "figlet Time to work");
+        strcpy(currMsg, "figlet -f future Time to Work");
     }
     if (param == longBreak)
     {
-        strcpy(currMsg, "figlet Long Break!");
+        strcpy(currMsg, "figlet -f future Long Break!");
     }
     if (param == shortBreak)
     {
-        strcpy(currMsg, "figlet Short break?");
+        strcpy(currMsg, "figlet -f future Short break?");
     }
     char sec[3] = {0};
     char min[3] = {0};
     int seconds = 59;
     int min2 = minutes;
     min2--;
-    while (min2 >= 0)
+    while (min2 > -1)
     {
         sprintf(min, "%d", min2);
         sprintf(sec, "%d", seconds);
@@ -63,12 +63,15 @@ void timer(int minutes, enum msg param)
         while (clock() < stop)
             ;
         seconds--;
+
         if (seconds == 0)
         {
             min2--;
             seconds = 59;
         }
     }
+    system(cls);
+    system("figlet -f future 0:0");
     system("mpv --no-vid --terminal=no assests/sound.mp3");
 }
 void mainLoop()

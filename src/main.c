@@ -80,6 +80,7 @@ void timer(int minutes, enum msg param)
     system("figlet -f future 0:0");
     system("mpv --no-vid --terminal=no assests/sound.mp3");
 }
+
 void mainLoop()
 {
     system(cls);

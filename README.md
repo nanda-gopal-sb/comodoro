@@ -29,6 +29,6 @@ sudo dnf install figlet mpv
 ```sh
 git clone https://github.com/nanda-gopal-sb/comodoro
 cd comodoro
-gcc src/main.c #you could also use clang
+gcc src/main.c # you could also use clang
 ./a.out
 ```

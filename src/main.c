@@ -12,16 +12,21 @@ enum msg
     longBreak,
     shortBreak
 };
+
+// takes in a boolean value, and then makes the terminal cursor disappear and then apprear
 void SetTextCursorVisible(int visible)
 {
     fputs((visible ? "\e[?25h" : "\e[?25l"), stdout);
 }
+
+// on ctr+C we execute this function, and sets the terminal into normal mode
 void intHandler(int condt)
 {
     system("tput cnorm");
     exit(1);
 }
 
+// takes in the original string and concats the sec and min to it
 void prepareString(char *figlet, char *sec, char *min)
 {
     strcpy(figlet, "figlet -f future ");
@@ -30,6 +35,7 @@ void prepareString(char *figlet, char *sec, char *min)
     strcat(figlet, sec);
 }
 
+// main counter logic, takes in the number of minutes and sets the message to be displayed based on the enum
 void timer(int minutes, enum msg param)
 {
     char currMsg[40] = "figlet time to work2\0";

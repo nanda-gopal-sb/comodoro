@@ -29,7 +29,7 @@ void intHandler(int condt)
 // takes in the original string and concats the sec and min to it
 void prepareString(char *figlet, char *sec, char *min)
 {
-    strcpy(figlet, "figlet -f future ");
+    strcpy(figlet, "figlet ");
     strcat(figlet, min);
     strcat(figlet, " : ");
     strcat(figlet, sec);
@@ -42,15 +42,15 @@ void timer(int minutes, enum msg param)
     char figlet[50] = "";
     if (param == work)
     {
-        strcpy(currMsg, "figlet -f future Time to Work");
+        strcpy(currMsg, "figlet Time to Work");
     }
     if (param == longBreak)
     {
-        strcpy(currMsg, "figlet -f future Long Break!");
+        strcpy(currMsg, "figlet Long Break!");
     }
     if (param == shortBreak)
     {
-        strcpy(currMsg, "figlet -f future Short break?");
+        strcpy(currMsg, "figlet Short break?");
     }
     char sec[3] = {0};
     char min[3] = {0};
@@ -77,7 +77,7 @@ void timer(int minutes, enum msg param)
         }
     }
     system(cls);
-    system("figlet -f future 0:0");
+    system("figlet 0:0");
     system("mpv --no-vid --terminal=no assests/sound.mp3");
 }
 
@@ -111,12 +111,15 @@ void mainLoop()
         if (breakCounter == 2)
         {
             timer(bigBreak, longBreak);
+            system("notify-send -a COMODORO -t 5000 'Take a big break'");
             breakCounter = 0;
             cycles--;
             continue;
         }
         timer(workTime, work);
+        system("notify-send -a COMODORO -t 10000 'Take a short break'");
         timer(smallBreak, shortBreak);
+        system("notify-send -a COMODORO -t 5000 'Time to work'");
         breakCounter++;
     }
 }
